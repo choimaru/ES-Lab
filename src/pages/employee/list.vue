@@ -24,6 +24,7 @@ const employeeList = [
         <th>ふりがな</th>
         <th>メールアドレス</th>
         <th>所属組織</th>
+        <th>役職</th>
         <th>権限</th>
         <th>ログイン日時</th>
         <th>雇用形態</th>
@@ -38,6 +39,7 @@ const employeeList = [
         <td>たなかたろう</td>
         <td>taro@example.com</td>
         <td>ABC Corporation</td>
+        <td>一般社員</td>
         <td>管理者</td>
         <td>2024-04-28 10:00 AM</td>
         <td>正社員</td>
