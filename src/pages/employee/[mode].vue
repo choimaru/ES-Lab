@@ -42,6 +42,7 @@ const formPersonal = reactive({
   emergencyTel: '',
   entryDate: '',
   retirementDate: '',
+  retirementStatus: '',
 });
 
 const departmentName = ref('');
@@ -143,6 +144,7 @@ const onClear = () => {
   formPersonal.emergencyTel = '';
   formPersonal.entryDate = '';
   formPersonal.retirementDate = '';
+  formPersonal.retirementStatus = '';
 
   departmentName.value = '';
 };
@@ -339,6 +341,22 @@ const onCreate = (): void => {
         <div class="item">
           <LabelItem>退職日</LabelItem>
           <InputText type="date" size="m" v-model="formPersonal.retirementDate" :disabled="permitLv < 2" />
+        </div>
+        <div class="item">
+          <LabelItem>退職区分</LabelItem>
+          <select
+            v-model="formPersonal.retirementStatus"
+            :class="{ g_disabled: permitLv < 2 }"
+            :disabled="permitLv < 2"
+          >
+            <option value="0">自己都合</option>
+            <option value="1">契約期間満了</option>
+            <option value="2">定年</option>
+            <option value="3">早期</option>
+            <option value="4">解雇</option>
+            <option value="5">会社都合</option>
+            <option value="6">その他</option>
+          </select>
         </div>
       </div>
     </template>
