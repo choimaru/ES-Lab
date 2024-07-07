@@ -1,9 +1,19 @@
 <script setup lang="ts">
-const employeeList = [
-  { id: 'U001', name: '一般社員', authority: 0 },
-  { id: 'U004', name: '人事社員', authority: 3 },
-  { id: 'U999', name: '管理者', authority: 99 },
-];
+type EmployeeList = {
+  employee_cd: string;
+  employee_name: string;
+  kana: string;
+  email: string;
+  department_cd: string;
+  post: string;
+  authority: number;
+  employment_status: number;
+  incumbency_status: number;
+  login_at: null | string;
+  locked_at: null | string;
+};
+
+const { data: employeeList } = await useFetch<EmployeeList[]>('/api/employee');
 </script>
 
 <template>
@@ -18,34 +28,36 @@ const employeeList = [
       </NuxtLink>
     </div>
     <table class="list">
-      <tr>
-        <th>社員コード</th>
-        <th>社員名</th>
-        <th>ふりがな</th>
-        <th>メールアドレス</th>
-        <th>所属組織</th>
-        <th>役職</th>
-        <th>権限</th>
-        <th>ログイン日時</th>
-        <th>雇用形態</th>
-        <th>在職区分</th>
-        <th>ロック日時</th>
-      </tr>
-      <tr v-for="employee in employeeList" :key="employee.id">
-        <td>
-          <NuxtLink :to="`/employee/${employee.id}`">{{ employee.id }}</NuxtLink>
-        </td>
-        <td>{{ employee.name }}</td>
-        <td>たなかたろう</td>
-        <td>taro@example.com</td>
-        <td>ABC Corporation</td>
-        <td>一般社員</td>
-        <td>管理者</td>
-        <td>2024-04-28 10:00 AM</td>
-        <td>正社員</td>
-        <td>在職中</td>
-        <td>2024-04-28 02:30 PM</td>
-      </tr>
+      <tbody>
+        <tr>
+          <th>社員コード</th>
+          <th>社員名</th>
+          <th>ふりがな</th>
+          <th>メールアドレス</th>
+          <th>所属組織</th>
+          <th>役職</th>
+          <th>権限</th>
+          <th>雇用形態</th>
+          <th>在職区分</th>
+          <th>ログイン日時</th>
+          <th>ロック日時</th>
+        </tr>
+        <tr v-for="employee in employeeList" :key="employee.employee_cd">
+          <td>
+            <NuxtLink :to="`/employee/${employee.employee_cd}`">{{ employee.employee_cd }}</NuxtLink>
+          </td>
+          <td>{{ employee.employee_name }}</td>
+          <td>{{ employee.kana }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.department_cd }}</td>
+          <td>{{ employee.post }}</td>
+          <td>{{ employee.authority }}</td>
+          <td>{{ employee.employment_status }}</td>
+          <td>{{ employee.incumbency_status }}</td>
+          <td>{{ employee.login_at }}</td>
+          <td>{{ employee.locked_at }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -62,6 +74,8 @@ const employeeList = [
 }
 
 .list {
+  background-color: #fff;
+
   tr {
     &:hover {
       background-color: #fadede;

@@ -9,6 +9,8 @@ const { search } = useZip();
 
 const title = mode === 'create' ? '社員登録' : '社員詳細';
 
+const { data: postList } = await useFetch('/api/general-code/post');
+
 const formEmployee = reactive({
   employeeCd: '',
   employeeName: '',
@@ -198,7 +200,17 @@ const onCreate = (): void => {
       </div>
       <div class="item">
         <LabelItem>役職</LabelItem>
-        <InputText size="m" v-model="formEmployee.post" :disabled="permitLv < 1" />
+        <select v-model="formEmployee.post" :disabled="permitLv < 1">
+          <option value="0">正社員</option>
+          <option value="1">契約社員</option>
+          <option value="2">嘱託社員</option>
+          <option value="3">派遣社員</option>
+          <option value="4">出向社員</option>
+          <option value="5">準社員</option>
+          <option value="6">パート</option>
+          <option value="7">アルバイト</option>
+          <option value="8">BP</option>
+        </select>
       </div>
       <div class="item">
         <LabelItem>権限</LabelItem>

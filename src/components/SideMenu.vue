@@ -1,12 +1,11 @@
 <script setup lang="ts">
 const route = useRoute();
+const config = useRuntimeConfig();
+const appUrl = config.public.url;
 
 const naviList = [
-  { url: '/home', name: 'ホーム' },
-  { url: '/employee', name: '社員マスタ' },
-  { url: '#', name: 'dummy会社概要' },
-  { url: '#', name: 'dummyサービス' },
-  { url: '#', name: 'dummyお問い合わせ' },
+  { url: appUrl + '/home', name: 'ホーム' },
+  { url: appUrl + '/employee', name: '社員マスタ' },
 ];
 </script>
 

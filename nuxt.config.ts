@@ -4,13 +4,19 @@ export default defineNuxtConfig({
   srcDir: 'src/',
   css: ['~/assets/styles/destyle.css', '~/assets/styles/style.scss'],
   app: {
-    baseURL: process.env.NUXT_APP_BASE_URL,
+    baseURL: '/',
     head: {
       title: 'EC-Lab',
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/round_flask_black.svg' }],
       htmlAttrs: {
         lang: 'ja',
       },
+    },
+  },
+  runtimeConfig: {
+    public: {
+      url: process.env.NUXT_APP_URL,
+      apiUrl: process.env.NUXT_APP_API_URL,
     },
   },
 });
