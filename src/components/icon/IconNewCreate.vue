@@ -5,7 +5,7 @@ const props = defineProps<BaseProps>();
 </script>
 
 <template>
-  <IconSvgBase :color="props.color">
+  <IconSvgBase :variant="props.variant">
     <g>
       <polygon
         points="374.107,448.835 34.01,448.835 34.01,194.102 164.947,194.102 164.947,63.165 374.107,63.165 374.107,96.698 408.117,64.049 408.117,29.155 164.947,29.155 34.01,160.092 0,194.102 0,482.845 408.117,482.845 408.117,282.596 374.107,318.034"

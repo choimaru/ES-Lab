@@ -25,8 +25,6 @@ const onLogin = () => {
   <form>
     <RadioList :list="employeeList" id-prefix="employee_" v-model:pickedId="employeeId" />
     <br />
-    <ButtonLogin @on-login="onLogin" />
+    <ButtonLogin size="s" @on-login="onLogin" />
   </form>
 </template>
-
-<style scoped></style>

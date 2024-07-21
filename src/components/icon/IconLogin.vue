@@ -5,7 +5,7 @@ const props = defineProps<BaseProps>();
 </script>
 
 <template>
-  <IconSvgBase :color="props.color">
+  <IconSvgBase :variant="props.variant">
     <g>
       <path
         d="M155.81,0v173.889h33.417V33.417h235.592l-74.87,50.656c-8.469,5.727-13.535,15.289-13.535,25.503v286.24 H189.227V282.079H155.81v147.154h180.604v70.93c0,4.382,2.423,8.404,6.29,10.451c3.867,2.056,8.558,1.811,12.189-0.644 l119.318-80.736V0H155.81z"

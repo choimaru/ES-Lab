@@ -1,33 +1,15 @@
 <script setup lang="ts">
-type EmployeeList = {
-  employee_cd: string;
-  employee_name: string;
-  kana: string;
-  email: string;
-  department_cd: string;
-  post: string;
-  authority: number;
-  employment_status: number;
-  incumbency_status: number;
-  login_at: null | string;
-  locked_at: null | string;
-};
+const router = useRouter();
 
-const { data: employeeList } = await useFetch<EmployeeList[]>('/api/employee');
+const { fetchEmployeeList } = useEmployee();
+const employeeList = await fetchEmployeeList();
 </script>
 
 <template>
   <div>
     <H1Title>社員一覧</H1Title>
-    <div class="link_create">
-      <NuxtLink to="/employee/create">
-        <span class="link_item">
-          <IconNewCreate color="#2929ff" />
-          社員の追加
-        </span>
-      </NuxtLink>
-    </div>
-    <table class="list">
+    <ButtonAddEmployee @on-add="router.push('/employee/create')" />
+    <table class="g_list">
       <tbody>
         <tr>
           <th>社員コード</th>
@@ -61,36 +43,3 @@ const { data: employeeList } = await useFetch<EmployeeList[]>('/api/employee');
     </table>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.link_create {
-  display: flex;
-}
-
-.link_item {
-  display: flex;
-  gap: 2px;
-  margin-bottom: 8px;
-}
-
-.list {
-  background-color: #fff;
-
-  tr {
-    &:hover {
-      background-color: #fadede;
-    }
-  }
-
-  th {
-    font-weight: bold;
-    background-color: #eee;
-  }
-
-  td,
-  th {
-    padding: 8px;
-    border: 1px solid #aaa;
-  }
-}
-</style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { messages, type Message } from './messages';
+import { messages } from './messages';
 
 const router = useRouter();
 const route = useRoute();
@@ -9,7 +9,9 @@ const { search } = useZip();
 
 const title = mode === 'create' ? '社員登録' : '社員詳細';
 
-const { data: postList } = await useFetch('/api/general-code/post');
+const { initialCreateData } = useEmployee();
+const { postList, authorityList, employmentStatusList, incumbencyStatusList, retirementStatusList } =
+  await initialCreateData();
 
 const formEmployee = reactive({
   employeeCd: '',
@@ -55,19 +57,6 @@ const tabList = ref([
   { id: 'tab3', name: 'その他' },
 ]);
 const pickedTabId = ref('tab1');
-
-const authorityList = [
-  { id: '0', name: '一般' },
-  { id: '1', name: '中級' },
-  { id: '2', name: '上級' },
-  { id: '3', name: '人事' },
-  { id: '99', name: '管理者' },
-];
-
-const incumbencyList = [
-  { id: '0', name: '在職中' },
-  { id: '1', name: '退職' },
-];
 
 const genderList = [
   { id: '0', name: '男性' },
@@ -148,7 +137,9 @@ const onClear = () => {
   formPersonal.retirementDate = '';
   formPersonal.retirementStatus = '';
 
+  // その他
   departmentName.value = '';
+  showMessages.value = [];
 };
 
 const onCreate = (): void => {
@@ -157,6 +148,7 @@ const onCreate = (): void => {
   if (!formEmployee.employeeCd) showMessages.value.push(messages.required.employeeCd);
   if (!formEmployee.employeeName) showMessages.value.push(messages.required.employeeName);
   if (!formEmployee.kana) showMessages.value.push(messages.required.kana);
+  if (!formEmployee.email) showMessages.value.push(messages.required.email);
   if (!formEmployee.password) showMessages.value.push(messages.required.password);
 };
 </script>
@@ -200,49 +192,27 @@ const onCreate = (): void => {
       </div>
       <div class="item">
         <LabelItem>役職</LabelItem>
-        <select v-model="formEmployee.post" :disabled="permitLv < 1">
-          <option value="0">正社員</option>
-          <option value="1">契約社員</option>
-          <option value="2">嘱託社員</option>
-          <option value="3">派遣社員</option>
-          <option value="4">出向社員</option>
-          <option value="5">準社員</option>
-          <option value="6">パート</option>
-          <option value="7">アルバイト</option>
-          <option value="8">BP</option>
+        <select v-model="formEmployee.post" :class="{ g_disabled: permitLv < 2 }" :disabled="permitLv < 1">
+          <option v-for="post in postList" :value="post.code">{{ post.name }}</option>
         </select>
       </div>
       <div class="item">
         <LabelItem>権限</LabelItem>
-        <RadioList
-          :list="authorityList"
-          id-prefix="auth_"
-          v-model:pickedId="formEmployee.authority"
-          :disabled="permitLv < 2"
-        />
+        <select v-model="formEmployee.authority" :class="{ g_disabled: permitLv < 2 }" :disabled="permitLv < 2">
+          <option v-for="authority in authorityList" :value="authority.code">{{ authority.name }}</option>
+        </select>
       </div>
       <div class="item">
         <LabelItem>雇用形態</LabelItem>
         <select v-model="formEmployee.employmentStatus" :class="{ g_disabled: permitLv < 2 }" :disabled="permitLv < 2">
-          <option value="0">正社員</option>
-          <option value="1">契約社員</option>
-          <option value="2">嘱託社員</option>
-          <option value="3">派遣社員</option>
-          <option value="4">出向社員</option>
-          <option value="5">準社員</option>
-          <option value="6">パート</option>
-          <option value="7">アルバイト</option>
-          <option value="8">BP</option>
+          <option v-for="employment in employmentStatusList" :value="employment.code">{{ employment.name }}</option>
         </select>
       </div>
       <div class="item">
         <LabelItem>在職区分</LabelItem>
-        <RadioList
-          :list="incumbencyList"
-          id-prefix="incumbency_"
-          v-model:pickedId="formEmployee.incumbencyStatus"
-          :disabled="permitLv < 2"
-        />
+        <select v-model="formEmployee.incumbencyStatus" :class="{ g_disabled: permitLv < 2 }" :disabled="permitLv < 2">
+          <option v-for="incumbency in incumbencyStatusList" :value="incumbency.code">{{ incumbency.name }}</option>
+        </select>
       </div>
     </div>
     <template v-if="permitLv >= 1">
@@ -361,13 +331,7 @@ const onCreate = (): void => {
             :class="{ g_disabled: permitLv < 2 }"
             :disabled="permitLv < 2"
           >
-            <option value="0">自己都合</option>
-            <option value="1">契約期間満了</option>
-            <option value="2">定年</option>
-            <option value="3">早期</option>
-            <option value="4">解雇</option>
-            <option value="5">会社都合</option>
-            <option value="6">その他</option>
+            <option v-for="retirement in retirementStatusList" :value="retirement.code">{{ retirement.name }}</option>
           </select>
         </div>
       </div>
@@ -418,23 +382,22 @@ const onCreate = (): void => {
         <InputText type="datetime-local" size="l" v-model="formEmployee.updated_at" :disabled="true" />
       </div>
     </div>
-    <Transition>
-      <div class="error_message" v-if="showMessages.length !== 0">
-        <ul>
-          <li v-for="(message, index) in showMessages" :key="index">{{ message }}</li>
-        </ul>
-      </div>
-    </Transition>
+    <ErrorMessage title="社員を登録することができませんでした" :list="showMessages" />
     <div class="buttons">
-      <ButtonCreate @on-create="onCreate" />
-      <ButtonClear @on-clear="onClear" />
-      <ButtonBack @on-back="router.push('/employee/list')" />
+      <div>
+        <ButtonBack @on-back="router.push('/employee/list')" />
+      </div>
+      <div>
+        <ButtonClear size="s" @on-clear="onClear" />
+        <ButtonCreate size="s" @on-create="onCreate" />
+      </div>
     </div>
   </form>
 </template>
 
 <style lang="scss" scoped>
 .box_create {
+  max-width: 800px;
   padding-top: 8px;
 }
 
@@ -466,42 +429,16 @@ const onCreate = (): void => {
   margin-left: 8px;
 }
 
-.error_message {
-  padding: 8px;
-  margin-top: 8px;
-  font-size: 12px;
-  color: #fa2e2e;
-  background-color: #ffd9d9;
-  border: 2px solid #fb6565;
-  border-right-width: 6px;
-  border-left-width: 6px;
-  border-radius: 4px;
-
-  li {
-    padding: 3px 0;
-    margin-left: 16px;
-    list-style-type: disc;
-  }
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-
 .buttons {
   display: flex;
   gap: 8px;
+  justify-content: space-between;
+  padding-right: 16px;
   margin-top: 16px;
   margin-left: 16px;
 
   button:first-child {
-    margin-right: 40px;
+    margin-right: 8px;
   }
 }
 </style>

@@ -4,8 +4,8 @@ const config = useRuntimeConfig();
 const appUrl = config.public.url;
 
 const naviList = [
-  { url: appUrl + '/home', name: 'ホーム' },
-  { url: appUrl + '/employee', name: '社員マスタ' },
+  { url: '/home', name: 'ホーム' },
+  { url: '/employee', name: '社員マスタ' },
 ];
 </script>
 
@@ -33,6 +33,8 @@ a {
 
 .selected {
   background-color: #f7f7f7;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 
   a {
     color: #000;
@@ -41,12 +43,14 @@ a {
 }
 
 .navi_list {
-  padding: 8px;
-  margin: 4px 0;
+  padding: 16px;
+  margin: 2px 0;
 
   &:hover {
     cursor: pointer;
     background-color: #f7f7f7;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 
     a {
       color: #000;

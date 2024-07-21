@@ -62,7 +62,8 @@
 .main {
   min-width: 700px;
   min-height: calc(100vh - 40px);
-  padding: 16px;
+  padding: 16px 24px;
+  padding-bottom: 40px;
   background-color: #f7f7f7;
 }
 

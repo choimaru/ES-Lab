@@ -1,3 +1,8 @@
+:root {
+  --primary: #259d63;
+  --link: #2929ff;
+}
+
 html {
   font-size: 14px;
   font-family:
@@ -20,11 +25,32 @@ select {
 }
 
 a {
-  color: #2929ff;
+  color: var(--link);
   text-decoration: underline;
 }
 
 .g_disabled {
   color: #999;
   background-color: #f4f4f4;
+}
+
+.g_list {
+  background-color: #fff;
+
+  tr {
+    &:hover {
+      background-color: #fadede;
+    }
+  }
+
+  th {
+    font-weight: bold;
+    background-color: #eee;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    border: 1px solid #aaa;
+  }
 }

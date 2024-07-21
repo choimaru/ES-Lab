@@ -3,5 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "javascript.experimental.updateImportsOnPaste": true,
+  "editor.accessibilitySupport": "off"
 }

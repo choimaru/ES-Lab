@@ -40,7 +40,7 @@ input[type='password'] {
   border: 1px solid #ced4da;
 
   &:focus {
-    border: 1px solid #79bb32;
+    border: 1px solid var(--primary);
     outline: none;
   }
 }

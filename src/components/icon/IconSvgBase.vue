@@ -2,17 +2,14 @@
 export type BaseProps = {
   width?: number;
   height?: number;
-  color?: string;
-  disabled?: boolean;
+  variant?: 'primary' | 'secondary' | 'tertiary';
 };
 
 const props = withDefaults(defineProps<BaseProps>(), {
   width: 16,
   height: 16,
-  color: '#fff',
+  variant: 'primary',
 });
-
-const color = ref(props.disabled ? '#dcdcdc' : props.color);
 </script>
 
 <template>
@@ -23,8 +20,14 @@ const color = ref(props.disabled ? '#dcdcdc' : props.color);
     viewBox="0 0 512 512"
     role="presentation"
   >
-    <g :fill="color">
+    <g>
       <slot />
     </g>
   </svg>
 </template>
+
+<style scoped>
+svg {
+  fill: v-bind("props.variant === 'primary' ? '#fff' : 'var(--primary)'");
+}
+</style>
