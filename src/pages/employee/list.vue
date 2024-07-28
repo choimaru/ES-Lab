@@ -3,6 +3,7 @@ const router = useRouter();
 
 const { fetchEmployeeList } = useEmployee();
 const employeeList = await fetchEmployeeList();
+const { sort, sortTableData } = useSortTable(employeeList, 'employeeCd');
 </script>
 
 <template>
@@ -12,32 +13,32 @@ const employeeList = await fetchEmployeeList();
     <table class="g_list">
       <tbody>
         <tr>
-          <th>社員コード</th>
+          <th id="employeeCd" class="sort_indicator asc" @click="sort('employeeCd')">社員コード</th>
           <th>社員名</th>
-          <th>ふりがな</th>
+          <th id="kana" class="sort_indicator" @click="sort('kana')">ふりがな</th>
           <th>メールアドレス</th>
-          <th>所属組織</th>
+          <th id="departmentCd" class="sort_indicator" @click="sort('departmentCd')">所属組織</th>
           <th>役職</th>
           <th>権限</th>
           <th>雇用形態</th>
           <th>在職区分</th>
-          <th>ログイン日時</th>
+          <th id="loginAt" class="sort_indicator" @click="sort('loginAt')">ログイン日時</th>
           <th>ロック日時</th>
         </tr>
-        <tr v-for="employee in employeeList" :key="employee.employee_cd">
+        <tr v-for="employee in sortTableData" :key="employee.employeeCd">
           <td>
-            <NuxtLink :to="`/employee/${employee.employee_cd}`">{{ employee.employee_cd }}</NuxtLink>
+            <NuxtLink :to="`/employee/${employee.employeeCd}`">{{ employee.employeeCd }}</NuxtLink>
           </td>
-          <td>{{ employee.employee_name }}</td>
+          <td>{{ employee.employeeName }}</td>
           <td>{{ employee.kana }}</td>
           <td>{{ employee.email }}</td>
-          <td>{{ employee.department_cd }}</td>
+          <td>{{ employee.departmentCd }}</td>
           <td>{{ employee.post }}</td>
           <td>{{ employee.authority }}</td>
-          <td>{{ employee.employment_status }}</td>
-          <td>{{ employee.incumbency_status }}</td>
-          <td>{{ employee.login_at }}</td>
-          <td>{{ employee.locked_at }}</td>
+          <td>{{ employee.employmentStatus }}</td>
+          <td>{{ employee.incumbencyStatus }}</td>
+          <td>{{ employee.loginAt }}</td>
+          <td>{{ employee.lockedAt }}</td>
         </tr>
       </tbody>
     </table>

@@ -10,6 +10,13 @@ const props = withDefaults(defineProps<BaseProps>(), {
   height: 16,
   variant: 'primary',
 });
+
+const fillColor =
+  props.variant === 'tertiary'
+    ? 'var(--link)'
+    : props.variant === 'primary'
+      ? '#fff'
+      : 'var(--primary)';
 </script>
 
 <template>
@@ -28,6 +35,6 @@ const props = withDefaults(defineProps<BaseProps>(), {
 
 <style scoped>
 svg {
-  fill: v-bind("props.variant === 'primary' ? '#fff' : 'var(--primary)'");
+  fill: v-bind(fillColor);
 }
 </style>

@@ -53,7 +53,7 @@ const emit = defineEmits<Emit>();
 .tertiary {
   height: 36px;
   padding: 0;
-  color: var(--primary);
+  color: var(--link);
   text-decoration: underline;
 }
 
