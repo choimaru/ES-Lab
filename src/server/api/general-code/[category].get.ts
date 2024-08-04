@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '../../db';
 
 export default defineEventHandler(async (event) => {
-  const category = event.context.params?.category;
+  const category = event.context.params?.category as string;
 
   try {
     return await db
@@ -13,6 +13,6 @@ export default defineEventHandler(async (event) => {
       .where(eq(generalCodes.category, category))
       .orderBy(generalCodes.sortKey);
   } catch (error) {
-    console.log(error);
+    throw createError('[DBError][File]api/employee/[category].get.ts [Message]' + error);
   }
 });

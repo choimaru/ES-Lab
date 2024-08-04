@@ -34,10 +34,16 @@ export default defineEventHandler(async () => {
       .from(employees)
       .leftJoin(m1, and(eq(employees.post, m1.code), eq(m1.category, CATEGORY_POST)))
       .leftJoin(m2, and(eq(employees.authority, m2.code), eq(m2.category, CATEGORY_AUTHORITY)))
-      .leftJoin(m3, and(eq(employees.employmentStatus, m3.code), eq(m3.category, CATEGORY_EMPLOYMENT_STATUS)))
-      .leftJoin(m4, and(eq(employees.incumbencyStatus, m4.code), eq(m4.category, CATEGORY_INCUMBENCY_STATUS)))
+      .leftJoin(
+        m3,
+        and(eq(employees.employmentStatus, m3.code), eq(m3.category, CATEGORY_EMPLOYMENT_STATUS))
+      )
+      .leftJoin(
+        m4,
+        and(eq(employees.incumbencyStatus, m4.code), eq(m4.category, CATEGORY_INCUMBENCY_STATUS))
+      )
       .orderBy(employees.employeeCd);
   } catch (error) {
-    console.log(error);
+    throw createError('[DBError][File]api/employee/index.get.ts [Message]' + error);
   }
 });

@@ -1,13 +1,28 @@
 <script setup lang="ts">
+import type { Employees, PersonalDatas } from '~/server/db/drizzle/type';
 import { messages } from './messages';
+import { DUMMY_PASSWORD } from '~/server/db/const';
 
 const router = useRouter();
 const route = useRoute();
-const { mode } = route.params;
-
 const { search } = useZip();
 
-const title = mode === 'create' ? '社員登録' : '社員詳細';
+const { mode } = route.params as { mode: string };
+const isCreate = mode === 'create';
+const title = isCreate ? '社員登録' : '社員詳細';
+const tabList = ref([
+  { id: 'tab1', name: '基本情報' },
+  { id: 'tab2', name: '個人情報' },
+  { id: 'tab3', name: 'その他' },
+]);
+const pickedTabId = ref('tab1');
+const departmentName = ref('');
+const genderList = [
+  { id: '0', name: '男性' },
+  { id: '1', name: '女性' },
+];
+const showMessages = ref<string[]>([]);
+const isChangePassword = ref(isCreate);
 
 const { fetchEmployeeDetail, fetchGeneralCode } = useEmployee();
 const [postList, authorityList, employmentStatusList, incumbencyStatusList, retirementStatusList] =
@@ -19,7 +34,7 @@ const [postList, authorityList, employmentStatusList, incumbencyStatusList, reti
     fetchGeneralCode('retirement_status'),
   ]);
 
-const formEmployee = reactive({
+const formEmployee = reactive<Employees>({
   employeeCd: '',
   employeeName: '',
   kana: '',
@@ -34,14 +49,15 @@ const formEmployee = reactive({
   loginAt: '',
   failureCount: 0,
   lockedAt: '',
-  created_employee: '',
-  created_at: '',
-  updated_employee: '',
-  updated_at: '',
+  createdEmployee: '',
+  createdAt: '',
+  updatedEmployee: '',
+  updatedAt: '',
 });
 
-const formPersonal = reactive({
-  gender: '0',
+const formPersonal = reactive<PersonalDatas>({
+  employeeCd: '',
+  gender: 0,
   birthday: '',
   zipCode: '',
   prefecture: '',
@@ -52,48 +68,48 @@ const formPersonal = reactive({
   emergencyTel: '',
   entryDate: '',
   retirementDate: '',
-  retirementStatus: '',
+  retirementStatus: null,
+  createdEmployee: '',
+  createdAt: '',
+  updatedEmployee: '',
+  updatedAt: '',
 });
 
-// if (mode !== 'create') {
-//   const details = await fetchEmployeeDetail(mode as string);
-//   details.forEach((detail) => {
-//     formEmployee.employeeCd = detail.employeeCd;
-//     formEmployee.employeeName = detail.employeeName;
-//     formEmployee.kana = detail.kana;
-//     formEmployee.email = detail.email;
-//     formEmployee.password = detail.password;
-//     formEmployee.tel = detail.tel;
-//     formEmployee.departmentCd = detail.departmentCd;
-//     formEmployee.post = detail.post;
-//     formEmployee.authority = detail.authority;
-//     formEmployee.employmentStatus = detail.employmentStatus;
-//     formEmployee.incumbencyStatus = detail.incumbencyStatus;
-//     formEmployee.loginAt = detail.loginAt;
-//     formEmployee.failureCount = detail.failureCount;
-//     formEmployee.lockedAt = detail.lockedAt;
-//     formEmployee.created_employee = detail.createdEmployee;
-//     formEmployee.created_at = detail.createdAt;
-//     formEmployee.updated_employee = detail.updatedEmployee;
-//     formEmployee.updated_at = detail.updatedAt;
-//   });
-// }
-
-const departmentName = ref('');
-
-const tabList = ref([
-  { id: 'tab1', name: '基本情報' },
-  { id: 'tab2', name: '個人情報' },
-  { id: 'tab3', name: 'その他' },
-]);
-const pickedTabId = ref('tab1');
-
-const genderList = [
-  { id: '0', name: '男性' },
-  { id: '1', name: '女性' },
-];
-
-const showMessages = ref<string[]>([]);
+if (!isCreate) {
+  const details = await fetchEmployeeDetail(mode);
+  details.forEach((detail) => {
+    formEmployee.employeeCd = detail.employeeCd;
+    formEmployee.employeeName = detail.employeeName;
+    formEmployee.kana = detail.kana;
+    formEmployee.email = detail.email;
+    formEmployee.password = detail.password;
+    formEmployee.tel = detail.tel;
+    formEmployee.departmentCd = detail.departmentCd;
+    formEmployee.post = detail.post;
+    formEmployee.authority = detail.authority;
+    formEmployee.employmentStatus = detail.employmentStatus;
+    formEmployee.incumbencyStatus = detail.incumbencyStatus;
+    formEmployee.loginAt = detail.loginAt;
+    formEmployee.failureCount = detail.failureCount;
+    formEmployee.lockedAt = detail.lockedAt;
+    formEmployee.createdEmployee = detail.createdEmployee;
+    formEmployee.createdAt = detail.createdAt;
+    formEmployee.updatedEmployee = detail.updatedEmployee;
+    formEmployee.updatedAt = detail.updatedAt;
+    formPersonal.gender = detail.gender;
+    formPersonal.birthday = detail.birthday;
+    formPersonal.zipCode = detail.zipCode;
+    formPersonal.prefecture = detail.prefecture;
+    formPersonal.address = detail.address;
+    formPersonal.building = detail.building;
+    formPersonal.email = detail.email;
+    formPersonal.tel = detail.tel;
+    formPersonal.emergencyTel = detail.emergencyTel;
+    formPersonal.entryDate = detail.entryDate;
+    formPersonal.retirementDate = detail.retirementDate;
+    formPersonal.retirementStatus = detail.retirementStatus;
+  });
+}
 
 const searchZip = async () => {
   const zipInfo = await search(formPersonal.zipCode);
@@ -128,7 +144,7 @@ const onClear = () => {
   formEmployee.lockedAt = '';
 
   // 個人情報
-  formPersonal.gender = '0';
+  formPersonal.gender = 0;
   formPersonal.birthday = '';
   formPersonal.zipCode = '';
   formPersonal.prefecture = '';
@@ -139,11 +155,19 @@ const onClear = () => {
   formPersonal.emergencyTel = '';
   formPersonal.entryDate = '';
   formPersonal.retirementDate = '';
-  formPersonal.retirementStatus = '';
+  formPersonal.retirementStatus = null;
 
   // その他
   departmentName.value = '';
   showMessages.value = [];
+};
+
+const initPassword = () => {
+  if (isChangePassword.value) {
+    formEmployee.password = '';
+  } else {
+    formEmployee.password = DUMMY_PASSWORD;
+  }
 };
 
 const onCreate = (): void => {
@@ -180,7 +204,16 @@ const onCreate = (): void => {
       </div>
       <div class="item">
         <LabelItem required>パスワード</LabelItem>
-        <InputText type="password" size="xl" v-model="formEmployee.password" />
+        <InputText
+          type="password"
+          size="xl"
+          v-model="formEmployee.password"
+          :disabled="!isChangePassword"
+        />
+        <label class="checkbox_label" v-if="!isCreate">
+          <Checkbox v-model="isChangePassword" @on-change="initPassword" />
+          パスワードを変更する
+        </label>
       </div>
       <div class="item">
         <LabelItem>連絡先</LabelItem>
@@ -340,7 +373,7 @@ const onCreate = (): void => {
     <div class="content" v-show="pickedTabId === 'tab3'">
       <div class="item">
         <LabelItem>ログイン日時</LabelItem>
-        <InputText type="datetime-local" size="l" v-model="formEmployee.loginAt" />
+        <InputText type="datetime-local" size="xl" v-model="formEmployee.loginAt" />
       </div>
       <div class="item">
         <LabelItem>ログイン失敗回数</LabelItem>
@@ -348,31 +381,31 @@ const onCreate = (): void => {
       </div>
       <div class="item">
         <LabelItem>ロック日時</LabelItem>
-        <InputText type="datetime-local" size="l" v-model="formEmployee.lockedAt" />
+        <InputText type="datetime-local" size="xl" v-model="formEmployee.lockedAt" />
       </div>
       <div class="item">
         <LabelItem>作成者</LabelItem>
-        <InputText size="xl" v-model="formEmployee.created_employee" :disabled="true" />
+        <InputText size="xl" v-model="formEmployee.createdEmployee" :disabled="true" />
       </div>
       <div class="item">
         <LabelItem>作成日</LabelItem>
         <InputText
           type="datetime-local"
-          size="l"
-          v-model="formEmployee.created_at"
+          size="xl"
+          v-model="formEmployee.createdAt"
           :disabled="true"
         />
       </div>
       <div class="item">
         <LabelItem>更新者</LabelItem>
-        <InputText size="xl" v-model="formEmployee.updated_employee" :disabled="true" />
+        <InputText size="xl" v-model="formEmployee.updatedEmployee" :disabled="true" />
       </div>
       <div class="item">
         <LabelItem>更新日</LabelItem>
         <InputText
           type="datetime-local"
-          size="l"
-          v-model="formEmployee.updated_at"
+          size="xl"
+          v-model="formEmployee.updatedAt"
           :disabled="true"
         />
       </div>
@@ -416,6 +449,13 @@ const onCreate = (): void => {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+
+.checkbox_label {
+  display: flex;
+  gap: 4px;
+  align-items: center;
   cursor: pointer;
 }
 

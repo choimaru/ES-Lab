@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const router = useRouter();
 
-const { fetchEmployeeList } = useEmployee();
-const employeeList = await fetchEmployeeList();
+const { fetchList } = useEmployee();
+const employeeList = await fetchList();
 const { sort, sortTableData } = useSortTable(employeeList, 'employeeCd');
 </script>
 

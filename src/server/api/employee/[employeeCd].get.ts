@@ -1,28 +1,23 @@
 import { defineEventHandler } from 'h3';
-import { employees, generalCodes, personalDatas } from '../../db/drizzle/schema';
-import { and, eq } from 'drizzle-orm';
+import { employees, personalDatas } from '../../db/drizzle/schema';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '../../db';
 import { alias } from 'drizzle-orm/mysql-core';
-import {
-  CATEGORY_AUTHORITY,
-  CATEGORY_EMPLOYMENT_STATUS,
-  CATEGORY_INCUMBENCY_STATUS,
-  CATEGORY_POST,
-} from '../../db/const';
+import { DUMMY_PASSWORD } from '~/server/db/const';
 
 export default defineEventHandler(async (event) => {
-  const employeeCd = event.context.params?.employeeCd;
+  const employeeCd = event.context.params?.employeeCd as string;
 
   try {
     const m1 = alias(personalDatas, 'm1');
 
-    return await db
+    const result = await db
       .select({
         employeeCd: employees.employeeCd,
         employeeName: employees.employeeName,
         kana: employees.kana,
         email: employees.email,
-        password: employees.password,
+        password: sql<string>`${DUMMY_PASSWORD}`,
         tel: employees.tel,
         departmentCd: employees.departmentCd,
         post: employees.post,
@@ -52,7 +47,9 @@ export default defineEventHandler(async (event) => {
       .from(employees)
       .leftJoin(m1, eq(employees.employeeCd, m1.employeeCd))
       .where(eq(employees.employeeCd, employeeCd));
+
+    return result;
   } catch (error) {
-    console.log(error);
+    throw createError('[DBError][File]api/employee/[employeeCd].get.ts [Message]' + error);
   }
 });
