@@ -7,7 +7,7 @@ export type BaseProps = {
 };
 
 type Emit = {
-  'on-click': [];
+  'on-click': [event?: Event];
 };
 
 const props = defineProps<BaseProps>();
@@ -21,7 +21,7 @@ const emit = defineEmits<Emit>();
     class="base"
     :class="[`${props.variant}`, `size_${props.size}`, { disabled: props.disabled }]"
     :disabled="props.disabled"
-    @click="emit('on-click')"
+    @click="emit('on-click', $event)"
   >
     <slot />
   </button>

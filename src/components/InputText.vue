@@ -26,7 +26,7 @@ const model = defineModel();
 
 <style lang="scss" scoped>
 input[type='number'] {
-  padding-right: 2px;
+  padding-right: 4px;
   text-align: right;
 }
 

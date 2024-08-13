@@ -1,27 +1,45 @@
+import type { Detail } from '~/pages/employee/[employeeCd].vue';
+
 export const useEmployee = () => {
   const FILE_NAME = 'employee.ts';
 
-  const fetchList = async () => {
+  async function fetchList() {
     const { data, error } = await useFetch('/api/employee');
     if (error.value) {
       console.log(error.value.data.message);
       console.log(`[FetchError][File]${FILE_NAME} [Method]fetchList`);
     }
     return data.value || [];
-  };
+  }
 
-  const fetchDetail = async (employeeCd: string) => {
+  async function fetchDetail(employeeCd: string) {
     const { data, error } = await useFetch(`/api/employee/${employeeCd}`);
     if (error.value) {
       console.log(error.value.data.message);
       console.log(`[FetchError][File]${FILE_NAME} [Method]fetchDetail`);
     }
     return data.value && data.value.length > 0 ? data.value[0] : defaultEmployee;
-  };
+  }
+
+  async function register(detail: Detail) {
+    const response = await $fetch(`/api/employee`, {
+      method: 'POST',
+      body: detail,
+    });
+  }
+
+  async function del(employeeCd: string) {
+    const response = await $fetch(`/api/employee`, {
+      method: 'DELETE',
+      body: { employeeCd },
+    });
+  }
 
   return {
     fetchList,
     fetchDetail,
+    register,
+    del,
   };
 };
 

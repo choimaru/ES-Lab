@@ -27,9 +27,7 @@ const fillColor =
     viewBox="0 0 512 512"
     role="presentation"
   >
-    <g>
-      <slot />
-    </g>
+    <slot />
   </svg>
 </template>
 

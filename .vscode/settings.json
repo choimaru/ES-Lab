@@ -9,5 +9,7 @@
   "typescript.validate.enable": true,
   "workbench.colorCustomizations": {
     "tab.activeBackground": "#797878cc"
-  }
+  },
+  "vue3snippets.printWidth": 100,
+  "prettier.printWidth": 100
 }

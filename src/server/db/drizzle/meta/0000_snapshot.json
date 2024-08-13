@@ -1,0 +1,413 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "5",
+  "dialect": "mysql",
+  "tables": {
+    "employees": {
+      "name": "employees",
+      "columns": {
+        "employee_cd": {
+          "autoincrement": false,
+          "name": "employee_cd",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "employee_name": {
+          "autoincrement": false,
+          "name": "employee_name",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kana": {
+          "autoincrement": false,
+          "name": "kana",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "autoincrement": false,
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tel": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "tel",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "department_cd": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "department_cd",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "post",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "authority": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "authority",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employment_status": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "employment_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "incumbency_status": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "incumbency_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "login_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "failure_count": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "failure_count",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "locked_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "locked_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_employee": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "created_employee",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_employee": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "updated_employee",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "general_codes": {
+      "name": "general_codes",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "bigint(20) unsigned",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "autoincrement": false,
+          "name": "category",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "autoincrement": false,
+          "name": "code",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "description",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sort_key": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "sort_key",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "general_codes_category_code_unique": {
+          "name": "general_codes_category_code_unique",
+          "columns": [
+            "category",
+            "code"
+          ]
+        }
+      }
+    },
+    "migrations": {
+      "name": "migrations",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int(10) unsigned",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "migration": {
+          "autoincrement": false,
+          "name": "migration",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "batch": {
+          "autoincrement": false,
+          "name": "batch",
+          "type": "int(11)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "personal_datas": {
+      "name": "personal_datas",
+      "columns": {
+        "employee_cd": {
+          "autoincrement": false,
+          "name": "employee_cd",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "gender",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "birthday": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "birthday",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "zip_code": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "zip_code",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "prefecture": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "prefecture",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "address",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "building": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "building",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(150)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tel": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "tel",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "emergency_tel": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "emergency_tel",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "entry_date": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "entry_date",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "retirement_date": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "retirement_date",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "retirement_status": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "retirement_status",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_employee": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "created_employee",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_employee": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "updated_employee",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "default": "'NULL'",
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

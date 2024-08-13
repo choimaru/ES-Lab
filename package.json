@@ -12,7 +12,7 @@
     "drizzle:migrate": "npx drizzle-kit migrate",
     "drizzle:push": "npx drizzle-kit push",
     "drizzle:drop": "npx drizzle-kit drop",
-    "drizzle:introspect": "npx drizzle-kit introspect"
+    "drizzle:introspect": "npx drizzle-kit introspect:mysql"
   },
   "dependencies": {
     "drizzle-orm": "^0.29.3",

@@ -2,7 +2,7 @@
 import type { BaseProps } from './ButtonBase.vue';
 
 type Emit = {
-  'on-create': [];
+  'on-close': [];
 };
 
 const props = defineProps<BaseProps>();
@@ -11,12 +11,12 @@ const emit = defineEmits<Emit>();
 
 <template>
   <ButtonBase
-    variant="primary"
+    variant="secondary"
     :size="props.size"
     :disabled="props.disabled"
-    @on-click="emit('on-create')"
+    @on-click="emit('on-close')"
   >
-    <IconCreate variant="primary" />
-    登録
+    <IconClose variant="secondary" />
+    閉じる
   </ButtonBase>
 </template>

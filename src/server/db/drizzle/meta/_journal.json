@@ -1,1 +1,13 @@
-{"version":"7","dialect":"mysql","entries":[]}
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1723359921346,
+      "tag": "0000_careless_the_professor",
+      "breakpoints": true
+    }
+  ]
+}

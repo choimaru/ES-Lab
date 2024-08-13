@@ -1,4 +1,14 @@
-import { mysqlTable, mysqlSchema, varchar, timestamp, tinyint, unique, int, bigint } from 'drizzle-orm/mysql-core';
+import {
+  mysqlTable,
+  mysqlSchema,
+  AnyMySqlColumn,
+  varchar,
+  datetime,
+  tinyint,
+  unique,
+  int,
+  bigint,
+} from 'drizzle-orm/mysql-core';
 import { sql } from 'drizzle-orm';
 
 export const employees = mysqlTable('employees', {
@@ -13,13 +23,13 @@ export const employees = mysqlTable('employees', {
   authority: varchar('authority', { length: 50 }).default('NULL'),
   employmentStatus: varchar('employment_status', { length: 50 }).default('NULL'),
   incumbencyStatus: varchar('incumbency_status', { length: 50 }).default('NULL'),
-  loginAt: timestamp('login_at', { mode: 'string' }).default('NULL'),
-  failureCount: tinyint('failure_count'),
-  lockedAt: timestamp('locked_at', { mode: 'string' }).default('NULL'),
+  loginAt: datetime('login_at', { mode: 'string' }).default('NULL'),
+  failureCount: tinyint('failure_count').default('NULL'),
+  lockedAt: datetime('locked_at', { mode: 'string' }).default('NULL'),
   createdEmployee: varchar('created_employee', { length: 20 }).default('NULL'),
-  createdAt: timestamp('created_at', { mode: 'string' }).default('NULL'),
+  createdAt: datetime('created_at', { mode: 'string' }).default('NULL'),
   updatedEmployee: varchar('updated_employee', { length: 20 }).default('NULL'),
-  updatedAt: timestamp('updated_at', { mode: 'string' }).default('NULL'),
+  updatedAt: datetime('updated_at', { mode: 'string' }).default('NULL'),
 });
 
 export const generalCodes = mysqlTable(
@@ -30,13 +40,16 @@ export const generalCodes = mysqlTable(
     code: varchar('code', { length: 50 }).notNull(),
     name: varchar('name', { length: 100 }).notNull(),
     description: varchar('description', { length: 255 }).default('NULL'),
-    sortKey: int('sort_key'),
-    createdAt: timestamp('created_at', { mode: 'string' }).default('NULL'),
-    updatedAt: timestamp('updated_at', { mode: 'string' }).default('NULL'),
+    sortKey: int('sort_key').default('NULL'),
+    createdAt: datetime('created_at', { mode: 'string' }).default('NULL'),
+    updatedAt: datetime('updated_at', { mode: 'string' }).default('NULL'),
   },
   (table) => {
     return {
-      generalCodesCategoryCodeUnique: unique('general_codes_category_code_unique').on(table.category, table.code),
+      generalCodesCategoryCodeUnique: unique('general_codes_category_code_unique').on(
+        table.category,
+        table.code
+      ),
     };
   }
 );
@@ -49,7 +62,7 @@ export const migrations = mysqlTable('migrations', {
 
 export const personalDatas = mysqlTable('personal_datas', {
   employeeCd: varchar('employee_cd', { length: 8 }).notNull(),
-  gender: tinyint('gender'),
+  gender: tinyint('gender').default(0),
   birthday: varchar('birthday', { length: 10 }).default('NULL'),
   zipCode: varchar('zip_code', { length: 8 }).default('NULL'),
   prefecture: varchar('prefecture', { length: 10 }).default('NULL'),
@@ -60,9 +73,9 @@ export const personalDatas = mysqlTable('personal_datas', {
   emergencyTel: varchar('emergency_tel', { length: 15 }).default('NULL'),
   entryDate: varchar('entry_date', { length: 10 }).default('NULL'),
   retirementDate: varchar('retirement_date', { length: 10 }).default('NULL'),
-  retirementStatus: tinyint('retirement_status'),
+  retirementStatus: tinyint('retirement_status').default('NULL'),
   createdEmployee: varchar('created_employee', { length: 20 }).default('NULL'),
-  createdAt: timestamp('created_at', { mode: 'string' }).default('NULL'),
+  createdAt: datetime('created_at', { mode: 'string' }).default('NULL'),
   updatedEmployee: varchar('updated_employee', { length: 20 }).default('NULL'),
-  updatedAt: timestamp('updated_at', { mode: 'string' }).default('NULL'),
+  updatedAt: datetime('updated_at', { mode: 'string' }).default('NULL'),
 });

@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import IconTrash from '../icon/IconTrash.vue';
 import type { BaseProps } from './ButtonBase.vue';
 
 type Emit = {
-  'on-create': [];
+  'on-delete': [];
 };
 
 const props = defineProps<BaseProps>();
@@ -11,12 +12,12 @@ const emit = defineEmits<Emit>();
 
 <template>
   <ButtonBase
-    variant="primary"
+    :variant="props.variant"
     :size="props.size"
     :disabled="props.disabled"
-    @on-click="emit('on-create')"
+    @on-click="emit('on-delete')"
   >
-    <IconCreate variant="primary" />
-    登録
+    <IconTrash :variant="props.variant" />
+    削除
   </ButtonBase>
 </template>
