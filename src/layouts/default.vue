@@ -55,14 +55,14 @@
   align-items: center;
   justify-content: right;
   height: 40px;
-  padding: 16px;
+  padding-right: 16px;
   background-color: #ededed;
 }
 
 .main {
   min-width: 700px;
   min-height: calc(100vh - 40px);
-  padding: 16px 24px;
+  padding: 16px 32px;
   padding-bottom: 40px;
   background-color: #f7f7f7;
 }

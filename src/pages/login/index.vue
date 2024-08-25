@@ -5,14 +5,14 @@ const employeeList = [
   { id: 'U999', name: 'U999：管理者', authority: 99 },
 ];
 
-const employeeId = ref('U001');
+const employeeCd = ref('U001');
 
 const onLogin = () => {
-  const loginEmployee = employeeList.find((employee) => employee.id === employeeId.value);
+  const loginEmployee = employeeList.find((employee) => employee.id === employeeCd.value);
   const loginInfo = useLoginInfo();
 
   if (loginEmployee) {
-    loginInfo.value.employeeId = loginEmployee.id;
+    loginInfo.value.employeeCd = loginEmployee.id;
     loginInfo.value.employeeName = loginEmployee.name;
     loginInfo.value.authority = loginEmployee.authority;
   }
@@ -23,7 +23,7 @@ const onLogin = () => {
 
 <template>
   <form>
-    <RadioList :list="employeeList" id-prefix="employee_" v-model:pickedId="employeeId" />
+    <RadioList :list="employeeList" id-prefix="employee_" v-model:pickedId="employeeCd" />
     <br />
     <ButtonLogin size="s" @on-login="onLogin" />
   </form>

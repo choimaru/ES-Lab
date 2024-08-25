@@ -30,8 +30,7 @@ const props = defineProps<Props>();
   gap: 8px;
   padding: 12px;
   margin-top: 16px;
-  font-size: 12px;
-  background-color: #f9eded;
+  background-color: #fff;
   border: 2px solid #ec0000;
   border-left-width: 12px;
 

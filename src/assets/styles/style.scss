@@ -1,6 +1,7 @@
 :root {
   --primary: #259d63;
   --link: #2929ff;
+  --error: #ec0000;
 }
 
 html {
@@ -32,6 +33,10 @@ a {
 .g_disabled {
   color: #999;
   background-color: #f4f4f4;
+}
+
+.g_disabled_string {
+  color: #999;
 }
 
 .g_list {

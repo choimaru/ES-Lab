@@ -10,6 +10,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     const m1 = alias(personalDatas, 'm1');
+    const m2 = alias(employees, 'm2');
+    const m3 = alias(employees, 'm3');
 
     const result = await db
       .select({
@@ -27,9 +29,11 @@ export default defineEventHandler(async (event) => {
         loginAt: employees.loginAt,
         failureCount: employees.failureCount,
         lockedAt: employees.lockedAt,
-        createdEmployee: employees.createdEmployee,
+        createdEmployeeCd: employees.createdEmployeeCd,
+        createdEmployeeName: m2.employeeName,
         createdAt: employees.createdAt,
-        updatedEmployee: employees.updatedEmployee,
+        updatedEmployeeCd: employees.updatedEmployeeCd,
+        updatedEmployeeName: m3.employeeName,
         updatedAt: employees.updatedAt,
         gender: m1.gender,
         birthday: m1.birthday,
@@ -46,6 +50,8 @@ export default defineEventHandler(async (event) => {
       })
       .from(employees)
       .leftJoin(m1, eq(employees.employeeCd, m1.employeeCd))
+      .leftJoin(m2, eq(employees.createdEmployeeCd, m2.employeeCd))
+      .leftJoin(m3, eq(employees.updatedEmployeeCd, m3.employeeCd))
       .where(eq(employees.employeeCd, employeeCd));
 
     return result;

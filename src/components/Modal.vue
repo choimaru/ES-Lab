@@ -26,13 +26,8 @@ function closeDialog(event?: MouseEvent) {
 
 function handleOutsideClick(event: MouseEvent) {
   if (modal.value) {
-    const rect = modal.value.getBoundingClientRect();
-    if (
-      event.clientX < rect.left ||
-      event.clientX > rect.right ||
-      event.clientY < rect.top ||
-      event.clientY > rect.bottom
-    ) {
+    const targetElement = event.target as HTMLElement;
+    if (targetElement.closest('#modal') === null) {
       closeDialog(event);
     }
   }
@@ -50,7 +45,7 @@ defineExpose({
 
 <template>
   <dialog ref="modal" @click="handleOutsideClick">
-    <div class="modal">
+    <div class="modal" id="modal">
       <div class="message">
         <h3 class="title">{{ title }}</h3>
         <slot></slot>

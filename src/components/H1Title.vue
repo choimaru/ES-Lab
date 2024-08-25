@@ -4,8 +4,7 @@
 
 <style lang="scss" scoped>
 .title {
-  padding-bottom: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   font-size: 20px;
   font-weight: bold;
   color: #5f6f81;

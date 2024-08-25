@@ -1,7 +1,9 @@
 <script setup lang="ts">
 type Props = {
-  type?: 'text' | 'password' | 'date' | 'datetime-local' | 'number';
+  type?: 'text' | 'password' | 'date' | 'datetime-local' | 'number' | 'tel';
+  name?: string;
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  isError?: boolean;
   disabled?: boolean;
 };
 
@@ -17,7 +19,9 @@ const model = defineModel();
 <template>
   <input
     :type="props.type"
-    :class="[{ g_disabled: props.disabled }, props.size]"
+    :name="props.name"
+    class="base"
+    :class="[{ g_disabled: props.disabled }, { error: props.isError }, props.size]"
     v-model="model"
     :disabled="props.disabled"
     @blur="emit('on-blur')"
@@ -25,16 +29,7 @@ const model = defineModel();
 </template>
 
 <style lang="scss" scoped>
-input[type='number'] {
-  padding-right: 4px;
-  text-align: right;
-}
-
-input[type='text'],
-input[type='date'],
-input[type='datetime-local'],
-input[type='number'],
-input[type='password'] {
+.base {
   height: 32px;
   padding-left: 4px;
   border: 1px solid #ced4da;
@@ -43,6 +38,16 @@ input[type='password'] {
     border: 1px solid var(--primary);
     outline: none;
   }
+}
+
+input[type='number'] {
+  padding-right: 4px;
+  text-align: right;
+}
+
+.error {
+  border: 2px solid var(--error);
+  outline: none;
 }
 
 .xs {

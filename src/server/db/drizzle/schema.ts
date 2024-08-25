@@ -12,7 +12,7 @@ import {
 import { sql } from 'drizzle-orm';
 
 export const employees = mysqlTable('employees', {
-  employeeCd: varchar('employee_cd', { length: 8 }).notNull(),
+  employeeCd: varchar('employee_cd', { length: 12 }).notNull(),
   employeeName: varchar('employee_name', { length: 60 }).notNull(),
   kana: varchar('kana', { length: 60 }).notNull(),
   email: varchar('email', { length: 150 }).notNull(),
@@ -26,9 +26,9 @@ export const employees = mysqlTable('employees', {
   loginAt: datetime('login_at', { mode: 'string' }).default('NULL'),
   failureCount: tinyint('failure_count').default('NULL'),
   lockedAt: datetime('locked_at', { mode: 'string' }).default('NULL'),
-  createdEmployee: varchar('created_employee', { length: 20 }).default('NULL'),
+  createdEmployeeCd: varchar('created_employee_cd', { length: 12 }).default('NULL'),
   createdAt: datetime('created_at', { mode: 'string' }).default('NULL'),
-  updatedEmployee: varchar('updated_employee', { length: 20 }).default('NULL'),
+  updatedEmployeeCd: varchar('updated_employee_cd', { length: 12 }).default('NULL'),
   updatedAt: datetime('updated_at', { mode: 'string' }).default('NULL'),
 });
 

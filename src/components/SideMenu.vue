@@ -12,7 +12,11 @@ const naviList = [
 <template>
   <nav class="nav">
     <ul>
-      <li v-for="navi in naviList" class="navi_list" :class="{ selected: route.path.startsWith(navi.url) }">
+      <li
+        v-for="navi in naviList"
+        class="navi_list"
+        :class="{ selected: route.path.startsWith(navi.url) }"
+      >
         <NuxtLink :to="navi.url">{{ navi.name }}</NuxtLink>
       </li>
     </ul>
@@ -33,8 +37,6 @@ a {
 
 .selected {
   background-color: #f7f7f7;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
 
   a {
     color: #000;

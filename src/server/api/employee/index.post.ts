@@ -25,9 +25,9 @@ export default defineEventHandler(async (event) => {
       loginAt: body.loginAt === EMPTY_DATETIME ? null : body.loginAt,
       failureCount: body.failureCount,
       lockedAt: body.lockedAt === EMPTY_DATETIME ? null : body.lockedAt,
-      createdEmployee: body.createdEmployee,
+      createdEmployeeCd: body.createdEmployeeCd,
       createdAt: null,
-      updatedEmployee: body.updatedEmployee,
+      updatedEmployeeCd: body.updatedEmployeeCd,
       updatedAt: null,
     };
 
@@ -45,6 +45,7 @@ export default defineEventHandler(async (event) => {
             employeeData.password === DUMMY_PASSWORD
               ? sql`${employees.password}`
               : employeeData.password,
+          createdEmployeeCd: sql`${employees.createdEmployeeCd}`,
           createdAt: sql`${employees.createdAt}`,
           updatedAt: sql`current_timestamp`,
         },

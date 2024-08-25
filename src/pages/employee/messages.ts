@@ -1,19 +1,17 @@
 export type Message = {
-  required: {
-    employeeCd: string;
-    employeeName: string;
-    kana: string;
+  required: (fieldName: string) => string;
+  format: (fieldName: string) => {
     email: string;
-    password: string;
+    tel: string;
+    zipCode: string;
   };
 };
 
 export const messages: Message = {
-  required: {
-    employeeCd: '社員コードを入力してください。',
-    employeeName: '社員名を入力してください。',
-    kana: 'ふりがなを入力してください。',
-    email: 'メールアドレスを入力してください。',
-    password: 'パスワードを入力してください。',
-  },
+  required: (fieldName: string) => `${fieldName}を入力してください。`,
+  format: (fieldName: string) => ({
+    email: `${fieldName}には、有効なメールアドレスを入力してください。（例：example@example.com）`,
+    tel: `${fieldName}には、半角数字とハイフンのみで入力してください。`,
+    zipCode: `${fieldName}には、正しい形式で入力してください。（例：123-4567 または1234567）`,
+  }),
 };

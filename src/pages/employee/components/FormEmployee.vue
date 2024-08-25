@@ -25,7 +25,6 @@ const tabList = ref([
 ]);
 const pickedTabId = ref('tab1');
 const showMessages = ref<string[]>([]);
-const departmentName = ref('');
 const genderList = [
   { id: '0', name: '男性' },
   { id: '1', name: '女性' },
@@ -45,6 +44,38 @@ const [postList, authorityList, employmentStatusList, incumbencyStatusList, reti
   ]);
 
 const modal = ref<InstanceType<typeof Modal> | null>(null);
+
+const fieldNames = reactive({
+  employeeCd: '社員コード',
+  employeeName: '社員名',
+  kana: 'ふりがな',
+  email: '社用メールアドレス',
+  password: 'パスワード',
+  tel: '社用携帯番号',
+  zipCode: '郵便番号',
+  emailPersonal: '個人メールアドレス',
+  telPersonal: '個人携帯（電話）番号',
+  emergencyTel: '緊急連絡先',
+});
+
+const errors = reactive({
+  employeeCd: false,
+  employeeName: false,
+  kana: false,
+  email: false,
+  password: false,
+  tel: false,
+  zipCode: false,
+  emailPersonal: false,
+  telPersonal: false,
+  emergencyTel: false,
+});
+
+function resetErrors() {
+  Object.keys(errors).forEach((key) => {
+    errors[key as keyof typeof errors] = false;
+  });
+}
 
 function initPassword() {
   if (isChangePassword.value) {
@@ -70,24 +101,70 @@ async function searchZip() {
 }
 
 function onClear() {
+  resetErrors();
   showMessages.value = [];
   Object.assign(formEmployee, initDetail);
 }
 
 async function onCreate() {
+  resetErrors();
   showMessages.value = [];
 
   // check
-  if (!formEmployee.employeeCd) showMessages.value.push(messages.required.employeeCd);
-  if (!formEmployee.employeeName) showMessages.value.push(messages.required.employeeName);
-  if (!formEmployee.kana) showMessages.value.push(messages.required.kana);
-  if (!formEmployee.email) showMessages.value.push(messages.required.email);
-  if (!formEmployee.password) showMessages.value.push(messages.required.password);
+  if (!formEmployee.employeeCd) {
+    showMessages.value.push(messages.required(fieldNames.employeeCd));
+    errors.employeeCd = true;
+  }
+  if (!formEmployee.employeeName) {
+    showMessages.value.push(messages.required(fieldNames.employeeName));
+    errors.employeeName = true;
+  }
+  if (!formEmployee.kana) {
+    showMessages.value.push(messages.required(fieldNames.kana));
+    errors.kana = true;
+  }
+  if (!formEmployee.email) {
+    showMessages.value.push(messages.required(fieldNames.email));
+    errors.email = true;
+  }
+  if (!formEmployee.password) {
+    showMessages.value.push(messages.required(fieldNames.password));
+    errors.password = true;
+  }
+  const patternTel = /^[\d\-]+$/;
+  if (formEmployee.tel && !patternTel.test(formEmployee.tel)) {
+    showMessages.value.push(messages.format(fieldNames.tel).tel);
+    errors.tel = true;
+  }
+  const patternEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (formEmployee.email && !patternEmail.test(formEmployee.email)) {
+    showMessages.value.push(messages.format(fieldNames.email).email);
+    errors.email = true;
+  }
+  const patternZipCode = /^\d{3}-\d{4}$/;
+  if (formEmployee.zipCode && !patternZipCode.test(formEmployee.zipCode)) {
+    showMessages.value.push(messages.format(fieldNames.zipCode).zipCode);
+    errors.zipCode = true;
+  }
+  if (formEmployee.emailPersonal && !patternEmail.test(formEmployee.emailPersonal)) {
+    showMessages.value.push(messages.format(fieldNames.emailPersonal).email);
+    errors.emailPersonal = true;
+  }
+  if (formEmployee.telPersonal && !patternEmail.test(formEmployee.telPersonal)) {
+    showMessages.value.push(messages.format(fieldNames.telPersonal).tel);
+    errors.telPersonal = true;
+  }
+  if (formEmployee.emergencyTel && !patternEmail.test(formEmployee.emergencyTel)) {
+    showMessages.value.push(messages.format(fieldNames.emergencyTel).tel);
+    errors.emergencyTel = true;
+  }
 
-  // create
+  if (showMessages.value.length > 0) return;
+
+  // create or update
   const loginInfo = useLoginInfo();
-  formEmployee.createdEmployee = loginInfo.value.employeeId;
-  formEmployee.updatedEmployee = loginInfo.value.employeeId;
+  formEmployee.createdEmployeeCd = loginInfo.value.employeeCd;
+  formEmployee.updatedEmployeeCd = loginInfo.value.employeeCd;
   await register(formEmployee);
 
   router.push('/employee/list');
@@ -105,32 +182,33 @@ async function onDelete() {
 
 <template>
   <H1Title>{{ props.title }}</H1Title>
-  <form class="box_create" autocomplete="none">
+  <form class="box_create">
     <TabNavi :list="tabList" v-model:pickedId="pickedTabId" />
     <div class="content" v-show="pickedTabId === 'tab1'">
       <div class="item">
-        <LabelItem required>社員コード</LabelItem>
-        <InputText size="m" v-model="formEmployee.employeeCd" />
+        <LabelItem required>{{ fieldNames.employeeCd }}</LabelItem>
+        <InputText size="m" v-model="formEmployee.employeeCd" :is-error="errors.employeeCd" />
       </div>
       <div class="item">
-        <LabelItem required>社員名</LabelItem>
-        <InputText size="xl" v-model="formEmployee.employeeName" />
+        <LabelItem required>{{ fieldNames.employeeName }}</LabelItem>
+        <InputText size="xl" v-model="formEmployee.employeeName" :is-error="errors.employeeName" />
       </div>
       <div class="item">
-        <LabelItem required>ふりがな</LabelItem>
-        <InputText size="xl" v-model="formEmployee.kana" />
+        <LabelItem required>{{ fieldNames.kana }}</LabelItem>
+        <InputText size="xl" v-model="formEmployee.kana" :is-error="errors.kana" />
       </div>
       <div class="item">
-        <LabelItem required>メールアドレス</LabelItem>
-        <InputText size="xl" v-model="formEmployee.email" />
+        <LabelItem required>{{ fieldNames.email }}</LabelItem>
+        <InputText size="xl" v-model="formEmployee.email" :is-error="errors.email" />
       </div>
       <div class="item">
-        <LabelItem required>パスワード</LabelItem>
+        <LabelItem required>{{ fieldNames.password }}</LabelItem>
         <InputText
           type="password"
           size="xl"
           v-model="formEmployee.password"
           :disabled="!isChangePassword"
+          :is-error="errors.password"
         />
         <label class="checkbox_label" v-if="!isCreate">
           <Checkbox v-model="isChangePassword" @on-change="initPassword" />
@@ -138,15 +216,21 @@ async function onDelete() {
         </label>
       </div>
       <div class="item">
-        <LabelItem>連絡先</LabelItem>
-        <InputText size="xl" v-model="formEmployee.tel" />
+        <LabelItem>{{ fieldNames.tel }}</LabelItem>
+        <InputText
+          type="tel"
+          name="tte"
+          size="m"
+          v-model="formEmployee.tel"
+          :is-error="errors.tel"
+        />
       </div>
       <div class="item">
-        <LabelItem>所属部門コード</LabelItem>
+        <LabelItem>所属部門</LabelItem>
         <InputText size="m" v-model="formEmployee.departmentCd" />
         <IconSearch />
         <span class="name_space">
-          {{ departmentName }}
+          {{ 'formEmployee.departmentName' }}
         </span>
       </div>
       <div class="item">
@@ -190,8 +274,13 @@ async function onDelete() {
         <InputText type="date" size="m" v-model="formEmployee.birthday" />
       </div>
       <div class="item">
-        <LabelItem>郵便番号</LabelItem>
-        <InputText size="s" @on-blur="searchZip" v-model="formEmployee.zipCode" />
+        <LabelItem>{{ fieldNames.zipCode }}</LabelItem>
+        <InputText
+          size="s"
+          @on-blur="searchZip"
+          v-model="formEmployee.zipCode"
+          :is-error="errors.zipCode"
+        />
       </div>
       <div class="item">
         <LabelItem>都道府県</LabelItem>
@@ -206,16 +295,30 @@ async function onDelete() {
         <InputText size="xl" v-model="formEmployee.building" />
       </div>
       <div class="item">
-        <LabelItem>メールアドレス</LabelItem>
-        <InputText size="xl" v-model="formEmployee.emailPersonal" />
+        <LabelItem>{{ fieldNames.emailPersonal }}</LabelItem>
+        <InputText
+          size="xl"
+          v-model="formEmployee.emailPersonal"
+          :is-error="errors.emailPersonal"
+        />
       </div>
       <div class="item">
-        <LabelItem>連絡先</LabelItem>
-        <InputText size="xl" v-model="formEmployee.telPersonal" />
+        <LabelItem>{{ fieldNames.telPersonal }}</LabelItem>
+        <InputText
+          type="tel"
+          size="m"
+          v-model="formEmployee.telPersonal"
+          :is-error="errors.telPersonal"
+        />
       </div>
       <div class="item">
-        <LabelItem>緊急連絡先</LabelItem>
-        <InputText size="xl" v-model="formEmployee.emergencyTel" />
+        <LabelItem>{{ fieldNames.emergencyTel }}</LabelItem>
+        <InputText
+          type="tel"
+          size="m"
+          v-model="formEmployee.emergencyTel"
+          :is-error="errors.emergencyTel"
+        />
       </div>
       <div class="item">
         <LabelItem>入社日</LabelItem>
@@ -249,7 +352,8 @@ async function onDelete() {
       </div>
       <div class="item">
         <LabelItem>作成者</LabelItem>
-        <InputText size="xl" v-model="formEmployee.createdEmployee" :disabled="true" />
+        <InputText size="m" v-model="formEmployee.createdEmployeeCd" :disabled="true" />
+        <span class="g_disabled_string">{{ formEmployee.createdEmployeeName }}</span>
       </div>
       <div class="item">
         <LabelItem>作成日</LabelItem>
@@ -262,7 +366,8 @@ async function onDelete() {
       </div>
       <div class="item">
         <LabelItem>更新者</LabelItem>
-        <InputText size="xl" v-model="formEmployee.updatedEmployee" :disabled="true" />
+        <InputText size="m" v-model="formEmployee.updatedEmployeeCd" :disabled="true" />
+        <span class="g_disabled_string">{{ formEmployee.updatedEmployeeName }}</span>
       </div>
       <div class="item">
         <LabelItem>更新日</LabelItem>
