@@ -17,7 +17,6 @@
   height: 32px;
   cursor: pointer;
   background: #999;
-  border-radius: 0 4px 4px 0;
 }
 
 .search::before {

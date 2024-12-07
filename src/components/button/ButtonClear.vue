@@ -10,8 +10,13 @@ const emit = defineEmits<Emit>();
 </script>
 
 <template>
-  <ButtonBase color="orange" :disabled="props.disabled" @on-click="emit('on-clear')">
-    <IconClear />
+  <ButtonBase
+    variant="secondary"
+    :size="props.size"
+    :disabled="props.disabled"
+    @on-click="emit('on-clear')"
+  >
+    <IconClear variant="secondary" />
     クリア
   </ButtonBase>
 </template>

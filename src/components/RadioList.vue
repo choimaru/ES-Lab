@@ -45,7 +45,7 @@ input[type='radio'] + label::before {
   height: 16px;
   content: '';
   background: #fff;
-  border: 1px solid #72b22b;
+  border: 1px solid var(--primary);
   border-radius: 50%;
 }
 
@@ -57,7 +57,7 @@ input[type='radio'] + label::after {
   width: 8px;
   height: 8px;
   content: '';
-  background: #85ce36;
+  background: var(--primary);
   border-radius: 50%;
   opacity: 0;
   transition: 0.3s;

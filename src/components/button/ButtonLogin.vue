@@ -10,8 +10,8 @@ const emit = defineEmits<Emit>();
 </script>
 
 <template>
-  <ButtonBase color="green" :disabled="props.disabled" @on-click="emit('on-login')">
-    <IconLogin />
+  <ButtonBase variant="primary" :size="props.size" :disabled="props.disabled" @on-click="emit('on-login')">
+    <IconLogin variant="primary" />
     ログイン
   </ButtonBase>
 </template>

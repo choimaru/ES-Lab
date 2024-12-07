@@ -1,3 +1,9 @@
+:root {
+  --primary: #259d63;
+  --link: #2929ff;
+  --error: #ec0000;
+}
+
 html {
   font-size: 14px;
   font-family:
@@ -14,17 +20,82 @@ select {
   appearance: auto;
   padding: 4px 8px;
   &:focus {
-    border: 1px solid #79bb32;
+    border: 1px solid var(--primary);
     outline: none;
   }
 }
 
 a {
-  color: #2929ff;
+  color: var(--link);
   text-decoration: underline;
 }
 
 .g_disabled {
   color: #999;
   background-color: #f4f4f4;
+}
+
+.g_disabled_string {
+  color: #999;
+}
+
+.g_list {
+  background-color: #fff;
+
+  tr {
+    &:nth-child(odd) {
+      background-color: #f8f8fb;
+    }
+
+    &:hover {
+      background-color: #fadede;
+    }
+  }
+
+  th {
+    font-weight: bold;
+    background-color: #eee;
+    vertical-align: middle;
+  }
+
+  td,
+  th {
+    padding: 8px;
+    border: 1px solid #aaa;
+  }
+
+  .sort_indicator {
+    cursor: pointer;
+    position: relative;
+    min-width: 120px;
+  }
+
+  .sort_indicator::before,
+  .sort_indicator::after {
+    content: '';
+    height: 0;
+    width: 0;
+    position: absolute;
+    border: 5px solid transparent;
+    right: 10px;
+    top: 50%;
+  }
+
+  .sort_indicator::before {
+    border-bottom-color: #aaa;
+    margin-top: -11px;
+  }
+
+  .sort_indicator::after {
+    border-top-color: #aaa;
+    margin-top: 2px;
+  }
+
+  .sort_indicator.asc::before {
+    border-bottom-color: #000;
+  }
+
+  .sort_indicator.desc::after {
+    border-top-color: #000;
+  }
 }

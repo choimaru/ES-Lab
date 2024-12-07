@@ -1,12 +1,13 @@
 <script setup lang="ts">
 export type BaseProps = {
   id?: string;
-  color?: 'green' | 'blue' | 'orange';
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'xs' | 's' | 'm' | 'l';
   disabled?: boolean;
 };
 
 type Emit = {
-  'on-click': [];
+  'on-click': [event?: Event];
 };
 
 const props = defineProps<BaseProps>();
@@ -18,9 +19,9 @@ const emit = defineEmits<Emit>();
     type="button"
     :id="props.id"
     class="base"
-    :class="[props.color, { disabled: props.disabled }]"
+    :class="[`${props.variant}`, `size_${props.size}`, { disabled: props.disabled }]"
     :disabled="props.disabled"
-    @click="emit('on-click')"
+    @click="emit('on-click', $event)"
   >
     <slot />
   </button>
@@ -28,9 +29,8 @@ const emit = defineEmits<Emit>();
 
 <style lang="scss" scoped>
 .base {
-  height: 34px;
-  padding: 0 12px;
-  font-size: 12px;
+  padding: 3px 16px 0;
+  font-size: 14px;
   color: #fff;
   text-align: center;
 
@@ -39,19 +39,42 @@ const emit = defineEmits<Emit>();
   }
 }
 
-.green {
-  background-color: #85ce36;
-  border: 1px solid #72b22b;
+.primary {
+  color: #fff;
+  background-color: var(--primary);
 }
 
-.blue {
-  background-color: #2950bb;
-  border: 1px solid #2c56c9;
+.secondary {
+  color: var(--primary);
+  background-color: #fff;
+  border: 1px solid var(--primary);
 }
 
-.orange {
-  background-color: #feae31;
-  border: 1px solid #d1a300;
+.tertiary {
+  height: 36px;
+  padding: 0;
+  color: var(--link);
+  text-decoration: underline;
+}
+
+.size_xs {
+  min-width: 72px;
+  height: 28px;
+}
+
+.size_s {
+  min-width: 88px;
+  height: 36px;
+}
+
+.size_m {
+  min-width: 96px;
+  height: 48px;
+}
+
+.size_l {
+  min-width: 136px;
+  height: 56px;
 }
 
 .disabled {

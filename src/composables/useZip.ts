@@ -3,8 +3,8 @@ export const useZip = () => {
     results: [{ address1: string; address2: string; address3: string }];
   };
 
-  const search = async (zip: string): Promise<Info | null> => {
-    const postcode = zip.replace(/[^0-9]/g, '');
+  const search = async (zip: string | null): Promise<Info | null> => {
+    const postcode = zip?.replace(/[^0-9]/g, '');
 
     if (!postcode || postcode.length < 7) return null;
 

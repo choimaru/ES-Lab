@@ -1,14 +1,17 @@
-type LoginInfo = {
-  userId: string;
-  userName: string;
+export type LoginInfo = {
+  employeeCd: string;
+  employeeName: string;
+  email: string;
   authority: number;
 };
 
-export const useLoginInfo = () =>
-  useState<LoginInfo>('loginInfo', () => {
+export const useLoginInfo = () => {
+  return useState<LoginInfo>('loginInfo', () => {
     return {
-      userId: 'U999',
-      userName: 'yamada',
+      employeeCd: 'U999',
+      employeeName: 'yamada',
+      email: 'nuxt-developer@mamezou.com',
       authority: 99,
     };
   });
+};
